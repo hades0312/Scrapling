@@ -1,6 +1,7 @@
 # local files
 site/*
 local_tests/*
+.scrapling-dashboard/
 .mcpregistry_*
 
 # AI related files

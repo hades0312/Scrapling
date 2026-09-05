@@ -223,6 +223,27 @@ def shell(code, level):
     console.start()
 
 
+@command(help="Run Scrapling's local web dashboard.")
+@option("--host", type=str, default="127.0.0.1", help="Host to bind (default: 127.0.0.1)")
+@option("--port", type=int, default=8080, help="Port to bind (default: 8080)")
+@option("--open/--no-open", "open_browser", default=True, help="Open the dashboard in your browser")
+def dashboard(host, port, open_browser):
+    try:
+        import uvicorn
+        from scrapling.dashboard.app import create_app
+    except (ImportError, ModuleNotFoundError) as e:
+        raise ModuleNotFoundError(
+            'Dashboard dependencies are missing. Install with: pip install "scrapling[dashboard]"'
+        ) from e
+
+    if open_browser:
+        from threading import Timer
+        from webbrowser import open as browser_open
+
+        Timer(0.8, lambda: browser_open(f"http://{host}:{port}")).start()
+    uvicorn.run(create_app(), host=host, port=port, log_level="info")
+
+
 @group(
     help="Fetch web pages using various fetchers and extract full/selected HTML content as HTML, Markdown, or extract text content."
 )
@@ -708,3 +729,4 @@ main.add_command(install)
 main.add_command(shell)
 main.add_command(extract)
 main.add_command(mcp)
+main.add_command(dashboard)

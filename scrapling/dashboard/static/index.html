@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Scrapling Studio</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <a class="brand" href="/"><span class="brand-mark">S</span><span>Scrapling<small>STUDIO</small></span></a>
+      <nav>
+        <button class="nav active" data-view="workspace"><span>⌁</span> Workspace</button>
+        <button class="nav" data-view="history"><span>◷</span> Lịch sử crawl</button>
+      </nav>
+      <div class="aside-note"><span class="pulse"></span><div><strong>Local engine</strong><small>Dữ liệu nằm trên máy của bạn</small></div></div>
+    </aside>
+
+    <main>
+      <header><div><p class="eyebrow">SCRAPING WORKSPACE</p><h1>Thu thập nội dung web</h1></div><div class="engine"><i></i> Engine sẵn sàng</div></header>
+
+      <section id="workspace" class="view active">
+        <div class="hero-grid">
+          <form id="crawl-form" class="panel launch-panel">
+            <div class="panel-title"><div><span class="step">01</span><h2>Website nguồn</h2></div><span class="secure">LOCAL</span></div>
+            <label>Địa chỉ website</label>
+            <div class="url-field"><span>⌁</span><input id="url" type="url" required placeholder="https://example.com/blog"><button type="submit" id="start-btn">Bắt đầu crawl <b>→</b></button></div>
+            <div class="options">
+              <label><span>Chế độ tải trang</span><select id="engine"><option value="auto" selected>Tự động (khuyên dùng)</option><option value="http">HTTP — nhanh</option><option value="browser">Chromium — JavaScript</option></select></label>
+              <label><span>Giới hạn trang</span><input id="max-pages" type="number" min="1" max="5000" value="100"></label>
+              <label><span>Timeout mỗi trang</span><select id="timeout"><option value="15">15 giây</option><option value="30" selected>30 giây</option><option value="60">60 giây</option></select></label>
+              <label><span>Phạm vi liên kết</span><select id="scope"><option value="path" selected>URL đã nhập và đường dẫn con</option><option value="hostname">Toàn bộ hostname</option><option value="domain">Domain và mọi subdomain</option></select></label>
+              <label><span>Ngôn ngữ cần lấy</span><select id="language"><option value="en">English</option><option value="vi">Tiếng Việt</option><option value="all">Tất cả ngôn ngữ</option></select></label>
+              <label class="toggle-row"><input id="use-sitemap" type="checkbox" checked><i></i><span><b>Khám phá qua Sitemap</b><small>Đọc robots.txt và sitemap.xml</small></span></label>
+              <label class="toggle-row"><input id="crawl-links" type="checkbox" checked><i></i><span><b>Crawl bài viết bên trong</b><small>Đi theo liên kết cùng tên miền</small></span></label>
+              <label class="toggle-row"><input id="keep-html" type="checkbox" checked><i></i><span><b>Lưu giao diện HTML</b><small>Cho phép xem lại bản gốc</small></span></label>
+            </div>
+          </form>
+
+          <div class="panel status-panel" id="status-panel">
+            <div class="panel-title"><div><span class="step">02</span><h2>Tiến trình</h2></div><span id="status-badge" class="badge idle">Sẵn sàng</span></div>
+            <div class="progress-ring" id="progress-ring"><div><strong id="progress-value">0%</strong><small>HOÀN THÀNH</small></div></div>
+            <p id="status-message">Nhập URL để bắt đầu phiên thu thập mới.</p>
+            <p class="current-url" id="current-url">Chưa có tác vụ</p>
+            <div class="metrics"><div><strong id="metric-success">0</strong><span>Thành công</span></div><div><strong id="metric-failed">0</strong><span>Thất bại</span></div><div><strong id="metric-data">0 KB</strong><span>Dữ liệu</span></div></div>
+            <button id="cancel-btn" class="cancel hidden">Dừng crawl</button>
+          </div>
+        </div>
+
+        <section class="results-section">
+          <div class="results-head"><div><p class="eyebrow">LIVE RESULTS</p><h2>Nội dung đã thu thập <span id="result-count">0</span></h2></div><div id="exports" class="exports hidden"><a id="export-json">↓ JSON</a><a id="export-csv">↓ CSV</a></div></div>
+          <div id="empty" class="empty"><div>⌁</div><h3>Chưa có dữ liệu</h3><p>Kết quả sẽ xuất hiện tại đây ngay khi trang đầu tiên được xử lý.</p></div>
+          <div id="results" class="result-grid"></div>
+        </section>
+      </section>
+
+      <section id="history" class="view">
+        <div class="results-head"><div><p class="eyebrow">ARCHIVE</p><h2>Lịch sử crawl</h2></div><button id="refresh-history" class="ghost">↻ Làm mới</button></div>
+        <div id="history-list" class="history-list"></div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="detail-modal"><button class="modal-close">×</button><div id="modal-content"></div></dialog>
+  <div id="toast"></div>
+  <script src="/static/app.js"></script>
+</body>
+</html>
